@@ -6,9 +6,9 @@
 
 Use this template to bootstrap the creation of a TypeScript action.:rocket:
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+If you are new, there's also a simpler introduction. See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
 
 ## Create an action from this template
 
@@ -18,19 +18,22 @@ Click the `Use this Template` and provide the new repo details for your action
 
 > First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 9, for instance.
 
-Install the dependencies  
+Install the dependencies
+
 ```bash
-$ npm install
+$ yarn
 ```
 
 Build the typescript and package it for distribution
+
 ```bash
-$ npm run build && npm run package
+$ yarn build && yarn package
 ```
 
-Run the tests :heavy_check_mark:  
+Run the tests :heavy_check_mark:
+
 ```bash
-$ npm test
+$ yarn test
 
  PASS  ./index.test.js
   ✓ throws invalid number (3ms)
@@ -57,9 +60,9 @@ import * as core from '@actions/core';
 ...
 
 async function run() {
-  try { 
+  try {
       ...
-  } 
+  }
   catch (error) {
     core.setFailed(error.message);
   }
@@ -70,23 +73,12 @@ run()
 
 See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
 
-## Publish to a distribution branch
+## Publishing your action
 
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
+This starter template comes with a [release solution](.github/workflows/release.yml).
+You only need to configure the `bump:<release-type>` labels on your repository and add one of those on your pull request. Once merged, master will be released :rocket:
 
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
-```bash
-$ npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
+See the official [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) if you want to learn more about github actions releases.
 
 ## Validate
 
@@ -100,6 +92,22 @@ with:
 
 See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
 
-## Usage:
+## Usage
 
 After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+
+## Testing
+
+We are making several tests on our actions:
+
+- Unit tests with jest.
+
+- E2E tests with ...jest ! We simply execute the code with node, see `__tests__/index.e2e.test.ts`
+
+- Validation from workflows, see [Validate](#validate), we use the dist to trigger the action as it will be when published.
+
+### Caveats
+
+- E2E on actions using `@actions/github`
+
+Unfortunately, we can't mock dependencies the way we do with regular unit tests since we are simply executing the files with node. See [this issue](https://github.com/actions/toolkit/issues/71) and how we solved it in our [check-pull-request-title action](https://github.m6web.fr/bedrock-actions/check-pull-request-title/tree/main/__tests__)
