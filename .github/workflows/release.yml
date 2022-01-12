@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      
+
       # Bump version on merging Pull Requests with specific labels.
       # (bump:major,bump:minor,bump:patch)
       - id: bumpr
@@ -31,7 +31,7 @@ jobs:
       # Update corresponding major and minor tag.
       # e.g. Update v1 and v1.2 when releasing v1.2.3
       - uses: bedrock-actions/bedrock-action-update-semver@v2
-        if: "!steps.bumpr.outputs.skip"
+        if: '!steps.bumpr.outputs.skip'
         with:
           tag: ${{ steps.bumpr.outputs.next_version }}
 

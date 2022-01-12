@@ -6,9 +6,9 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
-    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write --ignore-unknown '**/*'",
+    "format-check": "prettier --check --ignore-unknown '**/*'",
+    "lint": "eslint .",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
     "all": "yarn build && yarn format && yarn lint && yarn package && yarn test"
@@ -28,6 +28,8 @@
     "@actions/core": "^1.4.0"
   },
   "devDependencies": {
+    "@bedrockstreaming/eslint-config": "4.0.0",
+    "@bedrockstreaming/prettier-config": "4.0.0",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.10.4",
     "@typescript-eslint/parser": "^4.28.3",
@@ -41,5 +43,6 @@
     "prettier": "2.2.1",
     "ts-jest": "^27.0.7",
     "typescript": "^4.1.3"
-  }
+  },
+  "prettier": "@bedrockstreaming/prettier-config"
 }

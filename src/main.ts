@@ -1,23 +1,26 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import { debug, getInput, setFailed, setOutput } from '@actions/core';
+import { wait } from './wait';
 
-export async function run(): Promise<void> {
+export default async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    const ms: string = getInput('milliseconds');
+    // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    debug(`Waiting ${ms} milliseconds ...`);
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    debug(new Date().toTimeString());
+    await wait(parseInt(ms, 10));
+    debug(new Date().toTimeString());
 
-    core.setOutput('time', new Date().toTimeString())
+    setOutput('time', new Date().toTimeString());
   } catch (error) {
     if (error instanceof Error) {
-      return core.setFailed(error.message)
+      return setFailed(error.message);
     }
 
-    return core.setFailed(`Unknown error: ${JSON.stringify(error)}`)
+    return setFailed(`Unknown error: ${JSON.stringify(error)}`);
   }
+
+  return undefined;
 }
 
-run()
+run();
