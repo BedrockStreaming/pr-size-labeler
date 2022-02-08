@@ -22,5 +22,3 @@ export default async function run(): Promise<void> {
 
   return undefined;
 }
-
-run();
