@@ -18,10 +18,7 @@ on:
 
 jobs:
   check-dist:
-    runs-on:
-      - self-hosted
-      - linter
-
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout all commits
         uses: actions/checkout@v2

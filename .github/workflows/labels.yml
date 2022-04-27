@@ -10,13 +10,10 @@ on:
 jobs:
   label:
     name: Manage GitHub labels
-    runs-on:
-      - self-hosted
-      - linter
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Manage labels
-        uses: public-github-actions/lannonbr--issue-label-manager-action@3.0.0
+        uses: lannonbr/issue-label-manager-action@3.0.0@3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
