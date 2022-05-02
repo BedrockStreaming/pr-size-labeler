@@ -1,11 +1,70 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'PR size labeler'
+description: 'Github action to automatically add label on PR to define size (based on line diff and file modified)'
+author: 'BedrockStreaming'
+branding:
+  icon: 'award'
+  color: 'green'
 inputs:
-  milliseconds: # change this
-    required: true
+  xs_label:
+    description: 'XS label text'
+    required: false
+    default: 'Size/XS'
+  xs_diff:
     description: 'input description here'
-    default: 'default value if applicable'
+    required: false
+    default: '50'
+  xs_files:
+    description: 'input description here'
+    required: false
+    default: '5'
+  s_label:
+    description: 'S label text'
+    required: false
+    default: 'Size/S'
+  s_diff:
+    description: 'input description here'
+    required: false
+    default: '100'
+  s_files:
+    description: 'input description here'
+    required: false
+    default: '10'
+  m_label:
+    description: 'M label text'
+    required: false
+    default: 'Size/M'
+  m_diff:
+    description: 'input description here'
+    required: false
+    default: '500'
+  m_files:
+    description: 'input description here'
+    required: false
+    default: '30'
+  l_label:
+    description: 'L label text'
+    required: false
+    default: 'Size/L'
+  l_diff:
+    description: 'input description here'
+    required: false
+    default: '800'
+  l_files:
+    description: 'input description here'
+    required: false
+    default: '50'
+  xl_label:
+    description: 'XL label text'
+    required: false
+    default: 'Size/XL'
+  xl_diff:
+    description: 'input description here'
+    required: false
+    default: '1500'
+  xl_files:
+    description: 'input description here'
+    required: false
+    default: '100'
 runs:
   using: 'node12'
   main: 'dist/index.js'

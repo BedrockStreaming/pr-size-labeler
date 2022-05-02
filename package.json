@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "@bedrockstreaming/pr-size-labeler",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "Github action to automatically add label on PR to define size (based on line diff and file modified)",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/BedrockStreaming/pr-size-labeler.git"
   },
   "keywords": [
     "actions",
@@ -38,10 +38,10 @@
     "eslint-plugin-github": "^4.1.1",
     "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-prettier": "^4.0.0",
-    "jest": "^27.3.1",
+    "jest": "^28.0.3",
     "js-yaml": "^4.1.0",
     "prettier": "2.2.1",
-    "ts-jest": "^27.0.7",
+    "ts-jest": "^27.1.4",
     "typescript": "^4.1.3"
   },
   "prettier": "@bedrockstreaming/prettier-config"
