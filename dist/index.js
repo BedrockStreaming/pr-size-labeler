@@ -126,7 +126,6 @@ function getPullRequest() {
         const octokit = github.getOctokit((0, core_1.getInput)('token'));
         const { data: files } = yield octokit.rest.pulls.listFiles(Object.assign(Object.assign({}, github.context.repo), { pull_number: github.context.issue.number }));
         (0, core_1.info)(`${files.length}`);
-        (0, core_1.info)(JSON.stringify(github.context.payload.pull_request));
         return Object.assign(Object.assign({}, github.context.payload.pull_request), { numberOfFiles: files.length });
     });
 }

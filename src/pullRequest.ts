@@ -14,8 +14,6 @@ export async function getPullRequest() {
 
   info(`${files.length}`);
 
-  info(JSON.stringify(github.context.payload.pull_request));
-
   return {
     ...github.context.payload.pull_request,
     numberOfFiles: files.length,
