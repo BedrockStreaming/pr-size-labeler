@@ -1,8 +1,9 @@
 import { ConfigEntry } from './config';
 import { info } from '@actions/core';
+import github from '@actions/github';
 
-export function getPullRequest(context: any) {
-  info(context);
+export function getPullRequest() {
+  info(JSON.stringify(github.context));
   info('Getting information about pull request');
 }
 

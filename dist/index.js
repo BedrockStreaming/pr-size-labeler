@@ -60,12 +60,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
-const github_1 = __importDefault(__nccwpck_require__(5438));
 const config_1 = __nccwpck_require__(88);
 const pullRequest_1 = __nccwpck_require__(7829);
 function run() {
@@ -73,7 +69,7 @@ function run() {
         (0, core_1.info)('Parsing input data...');
         const configuration = (0, config_1.parseConfig)();
         (0, core_1.info)(`Config parsed`);
-        const pullRequest = (0, pullRequest_1.getPullRequest)(github_1.default);
+        const pullRequest = (0, pullRequest_1.getPullRequest)();
         const size = (0, pullRequest_1.getFileSize)(configuration);
         const diff = (0, pullRequest_1.getDiffSize)(configuration);
         return undefined;
@@ -85,15 +81,19 @@ exports.default = run;
 /***/ }),
 
 /***/ 7829:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getDiffSize = exports.getFileSize = exports.getPullRequest = void 0;
 const core_1 = __nccwpck_require__(2186);
-function getPullRequest(context) {
-    (0, core_1.info)(context);
+const github_1 = __importDefault(__nccwpck_require__(5438));
+function getPullRequest() {
+    (0, core_1.info)(JSON.stringify(github_1.default.context));
     (0, core_1.info)('Getting information about pull request');
 }
 exports.getPullRequest = getPullRequest;
