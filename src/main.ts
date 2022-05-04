@@ -1,24 +1,22 @@
-import { debug, getInput, setFailed, setOutput } from '@actions/core';
-import { wait } from './wait';
+import { info } from '@actions/core';
+
+import { ConfigEntry, getBiggestEntry, parseConfig } from './config';
+import { applyLabelOnPullRequest, getDiffSize, getFileSize, getPullRequest } from './pullRequest';
 
 export default async function run(): Promise<void> {
-  try {
-    const ms: string = getInput('milliseconds');
-    // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
-    debug(`Waiting ${ms} milliseconds ...`);
+  info('Parsing input data...');
+  const configuration: ConfigEntry[] = parseConfig();
+  info(`Config parsed`);
 
-    debug(new Date().toTimeString());
-    await wait(parseInt(ms, 10));
-    debug(new Date().toTimeString());
+  const pullRequest = await getPullRequest();
+  const size = getFileSize(configuration, pullRequest.numberOfFiles);
+  info(`Level from size, ${size.label}`);
+  // @ts-ignore
+  const diff = getDiffSize(configuration, pullRequest.numberOfLines);
+  info(`Level from diff, ${diff.label}`);
 
-    setOutput('time', new Date().toTimeString());
-  } catch (error) {
-    if (error instanceof Error) {
-      return setFailed(error.message);
-    }
+  const biggestEntry = getBiggestEntry(size, diff);
 
-    return setFailed(`Unknown error: ${JSON.stringify(error)}`);
-  }
-
+  await applyLabelOnPullRequest(biggestEntry, configuration);
   return undefined;
 }

@@ -1,4 +1,4 @@
-name: release
+name: 📦 Release
 on:
   push:
     branches:
@@ -12,9 +12,7 @@ on:
 jobs:
   release:
     if: github.event.action != 'labeled'
-    runs-on:
-      - ubuntu-latest
-
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout all commits
         uses: actions/checkout@v2
