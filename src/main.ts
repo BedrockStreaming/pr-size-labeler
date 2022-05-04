@@ -10,10 +10,10 @@ export default async function run(): Promise<void> {
 
   const pullRequest = await getPullRequest();
   const size = getFileSize(configuration, pullRequest.numberOfFiles);
-  info(`Level from size, ${size}`);
+  info(`Level from size, ${size.label}`);
   // @ts-ignore
   const diff = getDiffSize(configuration, pullRequest.addition + pullRequest.deletions);
-  info(`Level from size, ${diff}`);
+  info(`Level from size, ${diff.label}`);
 
   return undefined;
 }

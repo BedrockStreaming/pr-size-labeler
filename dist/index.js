@@ -71,10 +71,10 @@ function run() {
         (0, core_1.info)(`Config parsed`);
         const pullRequest = yield (0, pullRequest_1.getPullRequest)();
         const size = (0, pullRequest_1.getFileSize)(configuration, pullRequest.numberOfFiles);
-        (0, core_1.info)(`Level from size, ${size}`);
+        (0, core_1.info)(`Level from size, ${size.label}`);
         // @ts-ignore
         const diff = (0, pullRequest_1.getDiffSize)(configuration, pullRequest.addition + pullRequest.deletions);
-        (0, core_1.info)(`Level from size, ${diff}`);
+        (0, core_1.info)(`Level from size, ${diff.label}`);
         return undefined;
     });
 }
