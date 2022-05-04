@@ -149,13 +149,14 @@ function applyLabelOnPullRequest(entry, configuration) {
     return __awaiter(this, void 0, void 0, function* () {
         // @ts-ignore
         const { labels } = github.context.payload.pull_request;
-        (0, core_1.info)(`Find existing labels ${labels}`);
+        (0, core_1.info)(`Find existing labels ${labels.join(',')}`);
         const octokit = github.getOctokit((0, core_1.getInput)('token'));
         if (labels.includes(entry.label)) {
             (0, core_1.info)('Label already exist');
             return;
         }
         const possibleLabels = configuration.map((entry) => entry.label);
+        (0, core_1.info)(`${possibleLabels.join(',')}`);
         const existingLabels = labels.filter((label) => possibleLabels.includes(label));
         (0, core_1.info)(`Existing label ${existingLabels}`);
         if (existingLabels.length) {

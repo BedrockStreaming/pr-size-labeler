@@ -34,7 +34,7 @@ export async function getPullRequest() {
 export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration: ConfigEntry[]) {
   // @ts-ignore
   const { labels } = github.context.payload.pull_request;
-  info(`Find existing labels ${labels}`);
+  info(`Find existing labels ${labels.join(',')}`);
 
   const octokit = github.getOctokit(getInput('token'));
 
@@ -44,6 +44,7 @@ export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration:
   }
 
   const possibleLabels = configuration.map((entry) => entry.label);
+  info(`${possibleLabels.join(',')}`);
   const existingLabels = labels.filter((label: string) => possibleLabels.includes(label));
   info(`Existing label ${existingLabels}`);
 
