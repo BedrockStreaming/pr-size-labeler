@@ -27,7 +27,7 @@ export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration:
 
   const octokit = github.getOctokit(getInput('token'));
 
-  if (labels.include(entry.label)) {
+  if (labels.includes(entry.label)) {
     return;
   }
 

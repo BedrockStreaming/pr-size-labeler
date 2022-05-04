@@ -142,10 +142,10 @@ function applyLabelOnPullRequest(entry, configuration) {
         const { labels } = github.context.payload.pull_request;
         (0, core_1.info)(`Find existing labels ${labels}`);
         const octokit = github.getOctokit((0, core_1.getInput)('token'));
-        if (labels.include(entry.label)) {
+        if (labels.includes(entry.label)) {
             return;
         }
-        const possibleLabels = configuration.map(entry => entry.label);
+        const possibleLabels = configuration.map((entry) => entry.label);
         const existingLabels = labels.filter((label) => possibleLabels.includes(label));
         if (existingLabels.length) {
             yield octokit.rest.issues.removeLabel(Object.assign(Object.assign({}, github.context.repo), { issue_number: github.context.issue.number, name: existingLabels[0] }));
