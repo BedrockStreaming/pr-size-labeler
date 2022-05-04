@@ -65,8 +65,9 @@ const core_1 = __nccwpck_require__(186);
 const config_1 = __nccwpck_require__(88);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const config = (0, config_1.parseConfig)();
-        (0, core_1.debug)(config.toString());
+        (0, core_1.debug)('Parsing input data...');
+        const configurations = (0, config_1.parseConfig)();
+        (0, core_1.debug)(`Config parsed ${configurations.map(entry => entry).join(',')}`);
         return undefined;
     });
 }
