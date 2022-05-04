@@ -3,7 +3,6 @@ import { getInput, info } from '@actions/core';
 import * as github from '@actions/github';
 
 export async function getPullRequest() {
-  info(JSON.stringify(github.context));
   info('Getting information about pull request');
 
   const octokit = github.getOctokit(getInput('token'));
@@ -15,15 +14,22 @@ export async function getPullRequest() {
 
   info(`${files.length}`);
 
+  info(JSON.stringify(github.context.payload.pull_request));
+
   return {
     ...github.context.payload.pull_request,
     numberOfFiles: files.length,
   };
 }
 
-export function getFileSize(configuration: ConfigEntry[], pullRequest = { files: 200 }): ConfigEntry {
+export const getSize = (entryParamName: string) => (
+  configuration: ConfigEntry[],
+  currentCount: number,
+): ConfigEntry => {
   const level = configuration.find((entry) => {
-    return entry.files < pullRequest.files;
+    // @ts-ignore
+    const entryLevel: number = entry[entryParamName];
+    return entryLevel < currentCount;
   });
 
   if (!level) {
@@ -31,16 +37,8 @@ export function getFileSize(configuration: ConfigEntry[], pullRequest = { files:
   }
 
   return level;
-}
+};
 
-export function getDiffSize(configuration: ConfigEntry[], pullRequest = { diff: 100 }): ConfigEntry {
-  const level = configuration.find((entry) => {
-    return entry.diff < pullRequest.diff;
-  });
+export const getFileSize = getSize('files');
 
-  if (!level) {
-    return configuration[configuration.length - 1];
-  }
-
-  return level;
-}
+export const getDiffSize = getSize('diff');

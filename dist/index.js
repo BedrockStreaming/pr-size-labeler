@@ -69,9 +69,12 @@ function run() {
         (0, core_1.info)('Parsing input data...');
         const configuration = (0, config_1.parseConfig)();
         (0, core_1.info)(`Config parsed`);
-        const pullRequest = (0, pullRequest_1.getPullRequest)();
-        const size = (0, pullRequest_1.getFileSize)(configuration);
-        const diff = (0, pullRequest_1.getDiffSize)(configuration);
+        const pullRequest = yield (0, pullRequest_1.getPullRequest)();
+        const size = (0, pullRequest_1.getFileSize)(configuration, pullRequest.numberOfFiles);
+        (0, core_1.info)(`Level from size, ${size}`);
+        // @ts-ignore
+        const diff = (0, pullRequest_1.getDiffSize)(configuration, pullRequest.addition + pullRequest.deletions);
+        (0, core_1.info)(`Level from size, ${diff}`);
         return undefined;
     });
 }
@@ -114,40 +117,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getDiffSize = exports.getFileSize = exports.getPullRequest = void 0;
+exports.getDiffSize = exports.getFileSize = exports.getSize = exports.getPullRequest = void 0;
 const core_1 = __nccwpck_require__(2186);
 const github = __importStar(__nccwpck_require__(5438));
 function getPullRequest() {
     return __awaiter(this, void 0, void 0, function* () {
-        (0, core_1.info)(JSON.stringify(github.context));
         (0, core_1.info)('Getting information about pull request');
         const octokit = github.getOctokit((0, core_1.getInput)('token'));
         const { data: files } = yield octokit.rest.pulls.listFiles(Object.assign(Object.assign({}, github.context.repo), { pull_number: github.context.issue.number }));
         (0, core_1.info)(`${files.length}`);
+        (0, core_1.info)(JSON.stringify(github.context.payload.pull_request));
         return Object.assign(Object.assign({}, github.context.payload.pull_request), { numberOfFiles: files.length });
     });
 }
 exports.getPullRequest = getPullRequest;
-function getFileSize(configuration, pullRequest = { files: 200 }) {
+const getSize = (entryParamName) => (configuration, currentCount) => {
     const level = configuration.find((entry) => {
-        return entry.files < pullRequest.files;
+        // @ts-ignore
+        const entryLevel = entry[entryParamName];
+        return entryLevel < currentCount;
     });
     if (!level) {
         return configuration[configuration.length - 1];
     }
     return level;
-}
-exports.getFileSize = getFileSize;
-function getDiffSize(configuration, pullRequest = { diff: 100 }) {
-    const level = configuration.find((entry) => {
-        return entry.diff < pullRequest.diff;
-    });
-    if (!level) {
-        return configuration[configuration.length - 1];
-    }
-    return level;
-}
-exports.getDiffSize = getDiffSize;
+};
+exports.getSize = getSize;
+exports.getFileSize = (0, exports.getSize)('files');
+exports.getDiffSize = (0, exports.getSize)('diff');
 
 
 /***/ }),

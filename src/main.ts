@@ -8,9 +8,12 @@ export default async function run(): Promise<void> {
   const configuration: ConfigEntry[] = parseConfig();
   info(`Config parsed`);
 
-  const pullRequest = getPullRequest();
-  const size = getFileSize(configuration);
-  const diff = getDiffSize(configuration);
+  const pullRequest = await getPullRequest();
+  const size = getFileSize(configuration, pullRequest.numberOfFiles);
+  info(`Level from size, ${size}`);
+  // @ts-ignore
+  const diff = getDiffSize(configuration, pullRequest.addition + pullRequest.deletions);
+  info(`Level from size, ${diff}`);
 
   return undefined;
 }
