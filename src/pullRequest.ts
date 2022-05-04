@@ -73,7 +73,7 @@ export const getSize = (entryParamName: string) => (
     // @ts-ignore
     const entryLevel: number = entry[entryParamName];
     info(`${entryLevel} < ${currentCount}`);
-    return entryLevel < currentCount;
+    return entryLevel > currentCount;
   });
 
   if (!level) {
