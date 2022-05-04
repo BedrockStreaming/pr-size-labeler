@@ -55,6 +55,25 @@ const main_1 = __importDefault(__nccwpck_require__(3109));
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -68,11 +87,16 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
 const config_1 = __nccwpck_require__(88);
 const pullRequest_1 = __nccwpck_require__(7829);
+const github = __importStar(__nccwpck_require__(5438));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         (0, core_1.info)('Parsing input data...');
         const configuration = (0, config_1.parseConfig)();
         (0, core_1.info)(`Config parsed`);
+        if (github.context.eventName != 'pull_request') {
+            (0, core_1.info)('Event is not pull request, doing nothing');
+            return;
+        }
         const pullRequest = yield (0, pullRequest_1.getPullRequest)();
         const size = (0, pullRequest_1.getFileSize)(configuration, pullRequest.numberOfFiles);
         (0, core_1.info)(`Level from size, ${size.label}`);
