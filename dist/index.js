@@ -147,9 +147,8 @@ function getPullRequest() {
 exports.getPullRequest = getPullRequest;
 function applyLabelOnPullRequest(entry, configuration) {
     return __awaiter(this, void 0, void 0, function* () {
-        (0, core_1.info)(JSON.stringify(github.context.payload.pull_request));
         // @ts-ignore
-        const labels = github.context.payload.pull_request.labels.map(l => l.name);
+        const labels = github.context.payload.pull_request.labels.map((l) => l.name);
         (0, core_1.info)(`Find existing labels ${labels.join(',')}`);
         const octokit = github.getOctokit((0, core_1.getInput)('token'));
         if (labels.includes(entry.label)) {
@@ -173,6 +172,7 @@ const getSize = (entryParamName) => (configuration, currentCount) => {
     const level = configuration.find((entry) => {
         // @ts-ignore
         const entryLevel = entry[entryParamName];
+        (0, core_1.info)(`${entryLevel} < ${currentCount}`);
         return entryLevel < currentCount;
     });
     if (!level) {

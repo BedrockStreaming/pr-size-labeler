@@ -32,8 +32,6 @@ export async function getPullRequest() {
 }
 
 export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration: ConfigEntry[]) {
-  info(JSON.stringify(github.context.payload.pull_request));
-
   // @ts-ignore
   const labels = github.context.payload.pull_request.labels.map((l) => l.name);
   info(`Find existing labels ${labels.join(',')}`);
@@ -74,6 +72,7 @@ export const getSize = (entryParamName: string) => (
   const level = configuration.find((entry) => {
     // @ts-ignore
     const entryLevel: number = entry[entryParamName];
+    info(`${entryLevel} < ${currentCount}`);
     return entryLevel < currentCount;
   });
 
