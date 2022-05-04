@@ -147,6 +147,7 @@ function getPullRequest() {
 exports.getPullRequest = getPullRequest;
 function applyLabelOnPullRequest(entry, configuration) {
     return __awaiter(this, void 0, void 0, function* () {
+        (0, core_1.info)(JSON.stringify(github.context.payload.pull_request));
         // @ts-ignore
         const { labels } = github.context.payload.pull_request;
         (0, core_1.info)(`Find existing labels ${labels.join(',')}`);

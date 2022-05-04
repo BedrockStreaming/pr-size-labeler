@@ -32,6 +32,8 @@ export async function getPullRequest() {
 }
 
 export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration: ConfigEntry[]) {
+  info(JSON.stringify(github.context.payload.pull_request));
+
   // @ts-ignore
   const { labels } = github.context.payload.pull_request;
   info(`Find existing labels ${labels.join(',')}`);
