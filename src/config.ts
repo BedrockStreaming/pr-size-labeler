@@ -10,7 +10,7 @@ export enum Size {
 
 export const SIZE_ORDER = [Size.XS, Size.S, Size.M, Size.L, Size.XL];
 
-type ConfigEntry = {
+export type ConfigEntry = {
   size: Size;
   diff: number;
   files: number;
