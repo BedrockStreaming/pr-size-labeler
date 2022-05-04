@@ -35,7 +35,7 @@ export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration:
   info(JSON.stringify(github.context.payload.pull_request));
 
   // @ts-ignore
-  const { labels } = github.context.payload.pull_request;
+  const labels = github.context.payload.pull_request.labels.map((l) => l.name);
   info(`Find existing labels ${labels.join(',')}`);
 
   const octokit = github.getOctokit(getInput('token'));
