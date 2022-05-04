@@ -13,15 +13,14 @@
 
 > Github action to automatically add label on PR to define size (based on line diff and file modified)
 
-
 ## Author
 
-* Website: https://tech.bedrockstreaming.com
-
+- Website: https://tech.bedrockstreaming.com
 
 ## 📝 License
 
 This project is [MIT](https://github.com/BedrockStreaming/pr-size-labeler/blob/master/LICENSE) licensed.
 
-***
+---
+
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
