@@ -10,11 +10,11 @@ inputs:
     required: false
     default: 'Size/XS'
   xs_diff:
-    description: 'input description here'
+    description: 'Size of line diff for XS label'
     required: false
     default: '50'
   xs_files:
-    description: 'input description here'
+    description: 'Size of file diff for XS label'
     required: false
     default: '5'
   s_label:
@@ -22,11 +22,11 @@ inputs:
     required: false
     default: 'Size/S'
   s_diff:
-    description: 'input description here'
+    description: 'Size of line diff for S label'
     required: false
     default: '100'
   s_files:
-    description: 'input description here'
+    description: 'Size of file diff for S label'
     required: false
     default: '10'
   m_label:
@@ -34,11 +34,11 @@ inputs:
     required: false
     default: 'Size/M'
   m_diff:
-    description: 'input description here'
+    description: 'Size of line diff for M label'
     required: false
     default: '500'
   m_files:
-    description: 'input description here'
+    description: 'Size of file diff for M label'
     required: false
     default: '30'
   l_label:
@@ -46,11 +46,11 @@ inputs:
     required: false
     default: 'Size/L'
   l_diff:
-    description: 'input description here'
+    description: 'Size of line diff for L label'
     required: false
     default: '800'
   l_files:
-    description: 'input description here'
+    description: 'Size of file diff for L label'
     required: false
     default: '50'
   xl_label:
@@ -58,13 +58,16 @@ inputs:
     required: false
     default: 'Size/XL'
   xl_diff:
-    description: 'input description here'
+    description: 'Size of line diff for XL label'
     required: false
     default: '1500'
   xl_files:
-    description: 'input description here'
+    description: 'Size of file diff for XL label'
     required: false
     default: '100'
+  exclude_files:
+    description: 'Regexp to ignore files from the line diff count (example: yarn.lock)'
+    required: true
   token:
     description: 'Github API token'
     required: true

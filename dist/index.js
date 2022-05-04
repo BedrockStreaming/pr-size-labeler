@@ -77,7 +77,7 @@ function run() {
         const size = (0, pullRequest_1.getFileSize)(configuration, pullRequest.numberOfFiles);
         (0, core_1.info)(`Level from size, ${size.label}`);
         // @ts-ignore
-        const diff = (0, pullRequest_1.getDiffSize)(configuration, pullRequest.addition + pullRequest.deletions);
+        const diff = (0, pullRequest_1.getDiffSize)(configuration, pullRequest.numberOfLines);
         (0, core_1.info)(`Level from diff, ${diff.label}`);
         const biggestEntry = (0, config_1.getBiggestEntry)(size, diff);
         yield (0, pullRequest_1.applyLabelOnPullRequest)(biggestEntry, configuration);
@@ -130,9 +130,17 @@ function getPullRequest() {
     return __awaiter(this, void 0, void 0, function* () {
         (0, core_1.info)('Getting information about pull request');
         const octokit = github.getOctokit((0, core_1.getInput)('token'));
+        const excludedFiles = (0, core_1.getInput)('exclude_files');
         const { data: files } = yield octokit.rest.pulls.listFiles(Object.assign(Object.assign({}, github.context.repo), { pull_number: github.context.issue.number }));
+        const numberOfLines = files.reduce((accumulator, file) => {
+            if (file.filename.match(excludedFiles)) {
+                (0, core_1.info)(`excluding diff from ${file.filename}`);
+                return accumulator;
+            }
+            return accumulator + file.changes;
+        }, 0);
         (0, core_1.info)(`${files.length}`);
-        return Object.assign(Object.assign({}, github.context.payload.pull_request), { numberOfFiles: files.length });
+        return Object.assign(Object.assign({}, github.context.payload.pull_request), { numberOfFiles: files.length, numberOfLines });
     });
 }
 exports.getPullRequest = getPullRequest;

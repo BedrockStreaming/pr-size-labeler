@@ -6,17 +6,27 @@ export async function getPullRequest() {
   info('Getting information about pull request');
 
   const octokit = github.getOctokit(getInput('token'));
+  const excludedFiles = getInput('exclude_files');
 
   const { data: files } = await octokit.rest.pulls.listFiles({
     ...github.context.repo,
     pull_number: github.context.issue.number,
   });
 
+  const numberOfLines = files.reduce((accumulator, file) => {
+    if (file.filename.match(excludedFiles)) {
+      info(`excluding diff from ${file.filename}`);
+      return accumulator;
+    }
+    return accumulator + file.changes;
+  }, 0);
+
   info(`${files.length}`);
 
   return {
     ...github.context.payload.pull_request,
     numberOfFiles: files.length,
+    numberOfLines,
   };
 }
 

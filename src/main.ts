@@ -12,7 +12,7 @@ export default async function run(): Promise<void> {
   const size = getFileSize(configuration, pullRequest.numberOfFiles);
   info(`Level from size, ${size.label}`);
   // @ts-ignore
-  const diff = getDiffSize(configuration, pullRequest.addition + pullRequest.deletions);
+  const diff = getDiffSize(configuration, pullRequest.numberOfLines);
   info(`Level from diff, ${diff.label}`);
 
   const biggestEntry = getBiggestEntry(size, diff);
