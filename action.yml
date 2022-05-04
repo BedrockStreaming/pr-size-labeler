@@ -65,6 +65,9 @@ inputs:
     description: 'input description here'
     required: false
     default: '100'
+  token:
+    description: 'Github API token'
+    required: true
 runs:
   using: 'node12'
   main: 'dist/index.js'
