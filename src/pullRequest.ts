@@ -1,8 +1,7 @@
 import { ConfigEntry } from './config';
-import { getInput, info } from '@actions/core';
+import { info } from '@actions/core';
 
 export function getPullRequest(context: any) {
-  const token = getInput('token');
   info(context);
   info('Getting information about pull request');
 }

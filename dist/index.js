@@ -73,7 +73,7 @@ function run() {
         (0, core_1.info)('Parsing input data...');
         const configuration = (0, config_1.parseConfig)();
         (0, core_1.info)(`Config parsed`);
-        const pullRequest = (0, pullRequest_1.getPullRequest)(github_1.default.context);
+        const pullRequest = (0, pullRequest_1.getPullRequest)(github_1.default);
         const size = (0, pullRequest_1.getFileSize)(configuration);
         const diff = (0, pullRequest_1.getDiffSize)(configuration);
         return undefined;
@@ -93,13 +93,12 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getDiffSize = exports.getFileSize = exports.getPullRequest = void 0;
 const core_1 = __nccwpck_require__(2186);
 function getPullRequest(context) {
-    const token = (0, core_1.getInput)('token');
     (0, core_1.info)(context);
     (0, core_1.info)('Getting information about pull request');
 }
 exports.getPullRequest = getPullRequest;
 function getFileSize(configuration, pullRequest = { files: 200 }) {
-    const level = configuration.find(entry => {
+    const level = configuration.find((entry) => {
         return entry.files < pullRequest.files;
     });
     if (!level) {
@@ -109,7 +108,7 @@ function getFileSize(configuration, pullRequest = { files: 200 }) {
 }
 exports.getFileSize = getFileSize;
 function getDiffSize(configuration, pullRequest = { diff: 100 }) {
-    const level = configuration.find(entry => {
+    const level = configuration.find((entry) => {
         return entry.diff < pullRequest.diff;
     });
     if (!level) {

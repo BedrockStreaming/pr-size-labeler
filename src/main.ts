@@ -9,7 +9,7 @@ export default async function run(): Promise<void> {
   const configuration: ConfigEntry[] = parseConfig();
   info(`Config parsed`);
 
-  const pullRequest = getPullRequest(github.context);
+  const pullRequest = getPullRequest(github);
   const size = getFileSize(configuration);
   const diff = getDiffSize(configuration);
 
