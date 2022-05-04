@@ -172,7 +172,6 @@ const getSize = (entryParamName) => (configuration, currentCount) => {
     const level = configuration.find((entry) => {
         // @ts-ignore
         const entryLevel = entry[entryParamName];
-        (0, core_1.info)(`${entryLevel} < ${currentCount}`);
         return entryLevel > currentCount;
     });
     if (!level) {
