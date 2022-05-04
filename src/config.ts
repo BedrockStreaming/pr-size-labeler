@@ -25,3 +25,7 @@ export function parseConfig(): ConfigEntry[] {
     label: getInput(`${size}_label`),
   }));
 }
+
+export const getBiggestEntry = (a: ConfigEntry, b: ConfigEntry): ConfigEntry => {
+  return SIZE_ORDER.indexOf(a.size) >= SIZE_ORDER.indexOf(b.size) ? a : b;
+};

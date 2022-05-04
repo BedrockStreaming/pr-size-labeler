@@ -20,6 +20,34 @@ export async function getPullRequest() {
   };
 }
 
+export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration: ConfigEntry[]) {
+  // @ts-ignore
+  const { labels } = github.context.payload.pull_request;
+  info(`Find existing labels ${labels}`);
+
+  const octokit = github.getOctokit(getInput('token'));
+
+  if (labels.include(entry.label)) {
+    return;
+  }
+
+  const possibleLabels = configuration.map((entry) => entry.label);
+  const existingLabels = labels.filter((label: string) => possibleLabels.includes(label));
+  if (existingLabels.length) {
+    await octokit.rest.issues.removeLabel({
+      ...github.context.repo,
+      issue_number: github.context.issue.number,
+      name: existingLabels[0],
+    });
+  }
+
+  await octokit.rest.issues.addLabels({
+    ...github.context.repo,
+    issue_number: github.context.issue.number,
+    labels: [{ name: entry.label }],
+  });
+}
+
 export const getSize = (entryParamName: string) => (
   configuration: ConfigEntry[],
   currentCount: number,

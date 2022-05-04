@@ -1,7 +1,7 @@
 import { info } from '@actions/core';
 
-import { ConfigEntry, parseConfig } from './config';
-import { getDiffSize, getFileSize, getPullRequest } from './pullRequest';
+import { ConfigEntry, getBiggestEntry, parseConfig } from './config';
+import { applyLabelOnPullRequest, getDiffSize, getFileSize, getPullRequest } from './pullRequest';
 
 export default async function run(): Promise<void> {
   info('Parsing input data...');
@@ -13,7 +13,10 @@ export default async function run(): Promise<void> {
   info(`Level from size, ${size.label}`);
   // @ts-ignore
   const diff = getDiffSize(configuration, pullRequest.addition + pullRequest.deletions);
-  info(`Level from size, ${diff.label}`);
+  info(`Level from diff, ${diff.label}`);
 
+  const biggestEntry = getBiggestEntry(size, diff);
+
+  await applyLabelOnPullRequest(biggestEntry, configuration);
   return undefined;
 }

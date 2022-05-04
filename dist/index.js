@@ -7,7 +7,7 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.parseConfig = exports.SIZE_ORDER = exports.Size = void 0;
+exports.getBiggestEntry = exports.parseConfig = exports.SIZE_ORDER = exports.Size = void 0;
 const core_1 = __nccwpck_require__(2186);
 var Size;
 (function (Size) {
@@ -27,6 +27,10 @@ function parseConfig() {
     }));
 }
 exports.parseConfig = parseConfig;
+const getBiggestEntry = (a, b) => {
+    return exports.SIZE_ORDER.indexOf(a.size) >= exports.SIZE_ORDER.indexOf(b.size) ? a : b;
+};
+exports.getBiggestEntry = getBiggestEntry;
 
 
 /***/ }),
@@ -74,7 +78,9 @@ function run() {
         (0, core_1.info)(`Level from size, ${size.label}`);
         // @ts-ignore
         const diff = (0, pullRequest_1.getDiffSize)(configuration, pullRequest.addition + pullRequest.deletions);
-        (0, core_1.info)(`Level from size, ${diff.label}`);
+        (0, core_1.info)(`Level from diff, ${diff.label}`);
+        const biggestEntry = (0, config_1.getBiggestEntry)(size, diff);
+        yield (0, pullRequest_1.applyLabelOnPullRequest)(biggestEntry, configuration);
         return undefined;
     });
 }
@@ -117,7 +123,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getDiffSize = exports.getFileSize = exports.getSize = exports.getPullRequest = void 0;
+exports.getDiffSize = exports.getFileSize = exports.getSize = exports.applyLabelOnPullRequest = exports.getPullRequest = void 0;
 const core_1 = __nccwpck_require__(2186);
 const github = __importStar(__nccwpck_require__(5438));
 function getPullRequest() {
@@ -130,6 +136,24 @@ function getPullRequest() {
     });
 }
 exports.getPullRequest = getPullRequest;
+function applyLabelOnPullRequest(entry, configuration) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // @ts-ignore
+        const { labels } = github.context.payload.pull_request;
+        (0, core_1.info)(`Find existing labels ${labels}`);
+        const octokit = github.getOctokit((0, core_1.getInput)('token'));
+        if (labels.include(entry.label)) {
+            return;
+        }
+        const possibleLabels = configuration.map(entry => entry.label);
+        const existingLabels = labels.filter((label) => possibleLabels.includes(label));
+        if (existingLabels.length) {
+            yield octokit.rest.issues.removeLabel(Object.assign(Object.assign({}, github.context.repo), { issue_number: github.context.issue.number, name: existingLabels[0] }));
+        }
+        yield octokit.rest.issues.addLabels(Object.assign(Object.assign({}, github.context.repo), { issue_number: github.context.issue.number, labels: [{ name: entry.label }] }));
+    });
+}
+exports.applyLabelOnPullRequest = applyLabelOnPullRequest;
 const getSize = (entryParamName) => (configuration, currentCount) => {
     const level = configuration.find((entry) => {
         // @ts-ignore
