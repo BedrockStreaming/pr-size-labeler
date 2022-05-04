@@ -21,7 +21,8 @@ export async function getPullRequest() {
     return accumulator + file.changes;
   }, 0);
 
-  info(`${files.length}`);
+  info(`Number of files ${files.length}`);
+  info(`Number of lines ${numberOfLines}`);
 
   return {
     ...github.context.payload.pull_request,

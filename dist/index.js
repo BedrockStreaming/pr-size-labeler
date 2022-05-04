@@ -139,7 +139,8 @@ function getPullRequest() {
             }
             return accumulator + file.changes;
         }, 0);
-        (0, core_1.info)(`${files.length}`);
+        (0, core_1.info)(`Number of files ${files.length}`);
+        (0, core_1.info)(`Number of lines ${numberOfLines}`);
         return Object.assign(Object.assign({}, github.context.payload.pull_request), { numberOfFiles: files.length, numberOfLines });
     });
 }
