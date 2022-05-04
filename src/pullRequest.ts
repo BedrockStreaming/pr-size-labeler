@@ -34,6 +34,8 @@ export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration:
 
   const possibleLabels = configuration.map((entry) => entry.label);
   const existingLabels = labels.filter((label: string) => possibleLabels.includes(label));
+  info(`Existing label ${existingLabels}`);
+
   if (existingLabels.length) {
     info(`Removing existing label ${existingLabels[0]}`);
     await octokit.rest.issues.removeLabel({
@@ -47,7 +49,7 @@ export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration:
   await octokit.rest.issues.addLabels({
     ...github.context.repo,
     issue_number: github.context.issue.number,
-    labels: [{ name: entry.label }],
+    labels: [entry.label],
   });
 }
 
