@@ -28,12 +28,14 @@ export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration:
   const octokit = github.getOctokit(getInput('token'));
 
   if (labels.includes(entry.label)) {
+    info('Label already exist');
     return;
   }
 
   const possibleLabels = configuration.map((entry) => entry.label);
   const existingLabels = labels.filter((label: string) => possibleLabels.includes(label));
   if (existingLabels.length) {
+    info(`Removing existing label ${existingLabels[0]}`);
     await octokit.rest.issues.removeLabel({
       ...github.context.repo,
       issue_number: github.context.issue.number,
@@ -41,6 +43,7 @@ export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration:
     });
   }
 
+  info(`Adding new label ${entry.label}`);
   await octokit.rest.issues.addLabels({
     ...github.context.repo,
     issue_number: github.context.issue.number,
