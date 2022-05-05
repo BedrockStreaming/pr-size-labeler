@@ -1,4 +1,4 @@
-name: 'PR size labeler'
+name: 'Pull Request auto size labeler'
 description: 'Github action to automatically add label on PR to define size (based on line diff and file modified)'
 author: 'BedrockStreaming'
 branding:
