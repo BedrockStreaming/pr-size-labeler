@@ -72,5 +72,5 @@ inputs:
     description: 'Github API token'
     required: true
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
