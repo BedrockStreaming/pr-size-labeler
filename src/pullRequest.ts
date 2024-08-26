@@ -8,18 +8,22 @@ export async function getPullRequest() {
   const octokit = github.getOctokit(getInput('token'));
   const excludedFiles = getInput('exclude_files');
 
-  const { data: files } = await octokit.rest.pulls.listFiles({
+  const { data } = await octokit.rest.pulls.listFiles({
     ...github.context.repo,
     pull_number: github.context.issue.number,
   });
 
-  const numberOfLines = files.reduce((accumulator, file) => {
+  const files = data.filter((file) => {
     if (file.filename.match(excludedFiles)) {
       info(`excluding diff from ${file.filename}`);
-      return accumulator;
+
+      return false;
     }
-    return accumulator + file.changes;
-  }, 0);
+
+    return true;
+  });
+
+  const numberOfLines = files.reduce((accumulator, file) => accumulator + file.changes, 0);
 
   info(`Number of files ${files.length}`);
   info(`Number of lines ${numberOfLines}`);
