@@ -32,7 +32,7 @@
     "@bedrockstreaming/eslint-config": "4.0.0",
     "@bedrockstreaming/prettier-config": "4.0.0",
     "@types/jest": "^27.0.3",
-    "@types/node": "^16.10.4",
+    "@types/node": "^20.17.0",
     "@typescript-eslint/parser": "^5.22.0",
     "@vercel/ncc": "^0.36.1",
     "eslint": "^7.31.0",
