@@ -12,7 +12,7 @@ jobs:
     name: Manage GitHub labels
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Manage labels
         uses: lannonbr/issue-label-manager-action@3.0.0
         env:

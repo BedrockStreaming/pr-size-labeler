@@ -1,7 +1,7 @@
 import { info } from '@actions/core';
 
-import { ConfigEntry, getBiggestEntry, parseConfig } from './config';
-import { applyLabelOnPullRequest, getDiffSize, getFileSize, getPullRequest } from './pullRequest';
+import { ConfigEntry, getBiggestEntry, parseConfig } from './config.js';
+import { applyLabelOnPullRequest, getDiffSize, getFileSize, getPullRequest } from './pullRequest.js';
 import * as github from '@actions/github';
 
 export default async function run(): Promise<void> {
@@ -9,7 +9,7 @@ export default async function run(): Promise<void> {
   const configuration: ConfigEntry[] = parseConfig();
   info(`Config parsed`);
 
-  if (github.context.eventName != 'pull_request') {
+  if (github.context.eventName !== 'pull_request') {
     info('Event is not pull request, doing nothing');
     return;
   }
@@ -17,7 +17,7 @@ export default async function run(): Promise<void> {
   const pullRequest = await getPullRequest();
   const size = getFileSize(configuration, pullRequest.numberOfFiles);
   info(`Level from size, ${size.label}`);
-  // @ts-ignore
+  // @ts-expect-error - numberOfLines is added dynamically
   const diff = getDiffSize(configuration, pullRequest.numberOfLines);
   info(`Level from diff, ${diff.label}`);
 
