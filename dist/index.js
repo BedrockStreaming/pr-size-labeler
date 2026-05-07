@@ -36269,7 +36269,7 @@ async function getPullRequest() {
     };
 }
 async function applyLabelOnPullRequest(entry, configuration) {
-    // @ts-ignore
+    // @ts-expect-error - pull_request payload labels are not fully typed
     const labels = github_context.payload.pull_request.labels.map((l) => l.name);
     info(`Find existing labels ${labels.join(',')}`);
     const octokit = getOctokit(getInput('token'));
@@ -36277,7 +36277,7 @@ async function applyLabelOnPullRequest(entry, configuration) {
         info('Label already exist');
         return;
     }
-    const possibleLabels = configuration.map((entry) => entry.label);
+    const possibleLabels = configuration.map((configEntry) => configEntry.label);
     info(`${possibleLabels.join(',')}`);
     const existingLabels = labels.filter((label) => possibleLabels.includes(label));
     info(`Existing label ${existingLabels}`);
@@ -36297,9 +36297,9 @@ async function applyLabelOnPullRequest(entry, configuration) {
     });
 }
 const getSize = (entryParamName) => (configuration, currentCount) => {
-    const level = configuration.find((entry) => {
-        // @ts-ignore
-        const entryLevel = entry[entryParamName];
+    const level = configuration.find((configEntry) => {
+        // @ts-expect-error - dynamic property access by string key
+        const entryLevel = configEntry[entryParamName];
         return entryLevel > currentCount;
     });
     if (!level) {
@@ -36319,14 +36319,13 @@ async function run() {
     info('Parsing input data...');
     const configuration = parseConfig();
     info(`Config parsed`);
-    if (github_context.eventName != 'pull_request') {
+    if (github_context.eventName !== 'pull_request') {
         info('Event is not pull request, doing nothing');
         return;
     }
     const pullRequest = await getPullRequest();
     const size = getFileSize(configuration, pullRequest.numberOfFiles);
     info(`Level from size, ${size.label}`);
-    // @ts-ignore
     const diff = getDiffSize(configuration, pullRequest.numberOfLines);
     info(`Level from diff, ${diff.label}`);
     const biggestEntry = getBiggestEntry(size, diff);

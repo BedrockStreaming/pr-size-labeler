@@ -17,7 +17,6 @@ export default async function run(): Promise<void> {
   const pullRequest = await getPullRequest();
   const size = getFileSize(configuration, pullRequest.numberOfFiles);
   info(`Level from size, ${size.label}`);
-  // @ts-expect-error - numberOfLines is added dynamically
   const diff = getDiffSize(configuration, pullRequest.numberOfLines);
   info(`Level from diff, ${diff.label}`);
 
