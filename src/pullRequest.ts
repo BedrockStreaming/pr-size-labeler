@@ -1,4 +1,4 @@
-import { ConfigEntry } from './config';
+import { ConfigEntry } from './config.js';
 import { getInput, info } from '@actions/core';
 import * as github from '@actions/github';
 
@@ -32,7 +32,7 @@ export async function getPullRequest() {
 }
 
 export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration: ConfigEntry[]) {
-  // @ts-ignore
+  // @ts-expect-error - pull_request payload labels are not fully typed
   const labels = github.context.payload.pull_request.labels.map((l) => l.name);
   info(`Find existing labels ${labels.join(',')}`);
 
@@ -43,7 +43,7 @@ export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration:
     return;
   }
 
-  const possibleLabels = configuration.map((entry) => entry.label);
+  const possibleLabels = configuration.map((configEntry) => configEntry.label);
   info(`${possibleLabels.join(',')}`);
   const existingLabels = labels.filter((label: string) => possibleLabels.includes(label));
   info(`Existing label ${existingLabels}`);
@@ -65,22 +65,21 @@ export async function applyLabelOnPullRequest(entry: ConfigEntry, configuration:
   });
 }
 
-export const getSize = (entryParamName: string) => (
-  configuration: ConfigEntry[],
-  currentCount: number,
-): ConfigEntry => {
-  const level = configuration.find((entry) => {
-    // @ts-ignore
-    const entryLevel: number = entry[entryParamName];
-    return entryLevel > currentCount;
-  });
+export const getSize =
+  (entryParamName: string) =>
+  (configuration: ConfigEntry[], currentCount: number): ConfigEntry => {
+    const level = configuration.find((configEntry) => {
+      // @ts-expect-error - dynamic property access by string key
+      const entryLevel: number = configEntry[entryParamName];
+      return entryLevel > currentCount;
+    });
 
-  if (!level) {
-    return configuration[configuration.length - 1];
-  }
+    if (!level) {
+      return configuration[configuration.length - 1];
+    }
 
-  return level;
-};
+    return level;
+  };
 
 export const getFileSize = getSize('files');
 
