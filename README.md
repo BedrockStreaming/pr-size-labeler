@@ -23,6 +23,10 @@ name: 🏷 PR size labeler
 
 on: [pull_request]
 
+permissions:
+  pull-requests: write
+  issues: write
+
 jobs:
   pr-labeler:
     runs-on: ubuntu-latest
