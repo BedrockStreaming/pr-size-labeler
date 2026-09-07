@@ -85,8 +85,9 @@ xl_files:
 token:
   required: true
 exclude_files:
-  description: 'Regexp to ignore files from the line diff count (example: yarn.lock)'
-  required: true
+  description: 'Regexp to ignore files from both the file and line diff counts (example: yarn.lock)'
+  required: false
+  default: ''
 ```
 
 ## [✍️ Contributing](./CONTRIBUTING.md)
