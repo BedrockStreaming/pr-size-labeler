@@ -36249,12 +36249,14 @@ async function getPullRequest() {
     info('Getting information about pull request');
     const octokit = getOctokit(getInput('token'));
     const excludedFiles = getInput('exclude_files');
+    // An empty input must exclude nothing: new RegExp('') matches every string.
+    const excludePattern = excludedFiles ? new RegExp(excludedFiles) : null;
     const { data } = await octokit.rest.pulls.listFiles({
         ...github_context.repo,
         pull_number: github_context.issue.number,
     });
     const files = data.filter((file) => {
-        if (file.filename.match(excludedFiles)) {
+        if (excludePattern?.test(file.filename)) {
             info(`excluding diff from ${file.filename}`);
             return false;
         }
